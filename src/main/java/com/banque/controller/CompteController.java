@@ -1,6 +1,6 @@
 package com.banque.controller;
-
 import com.banque.model.Compte;
+import com.banque.model.CompteRequest;
 import com.banque.service.CompteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +23,9 @@ public class CompteController {
 
     // Route POST /comptes → crée un nouveau compte
     @PostMapping
-    public Compte creerCompte(@RequestBody Map<String, Object> body) {
-        String nom = (String) body.get("nomTitulaire");
-        double solde = ((Number) body.get("soldeInitial")).doubleValue();
-        return compteService.creerCompte(nom, solde);
+      
+    public Compte creerCompte(@RequestBody CompteRequest request) {
+    return compteService.creerCompte(request.getNomTitulaire(), request.getSoldeInitial());
     }
+
 }
