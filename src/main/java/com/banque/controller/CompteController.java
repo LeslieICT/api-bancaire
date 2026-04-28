@@ -2,6 +2,7 @@ package com.banque.controller;
 
 import com.banque.model.Compte;
 import com.banque.model.CompteRequest;
+import com.banque.model.MontantRequest;
 import com.banque.service.CompteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,26 +39,25 @@ public class CompteController {
     }
 
     // POST /comptes/{id}/depot → effectuer un dépôt
-    @PostMapping("/{id}/depot")
-    public ResponseEntity<?> deposer(@PathVariable String id, @RequestBody Map<String, Double> body) {
-        try {
-            double montant = body.get("montant");
-            Compte compte = compteService.deposer(id, montant);
-            return ResponseEntity.ok(compte);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+@PostMapping("/{id}/depot")
+public ResponseEntity<?> deposer(@PathVariable String id, @RequestBody MontantRequest request) {
+    try {
+        Compte compte = compteService.deposer(id, request.getMontant());
+        return ResponseEntity.ok(compte);
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
+}
 
-    // POST /comptes/{id}/retrait → effectuer un retrait
-    @PostMapping("/{id}/retrait")
-    public ResponseEntity<?> retirer(@PathVariable String id, @RequestBody Map<String, Double> body) {
-        try {
-            double montant = body.get("montant");
-            Compte compte = compteService.retirer(id, montant);
-            return ResponseEntity.ok(compte);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+// POST /comptes/{id}/retrait → effectuer un retrait
+@PostMapping("/{id}/retrait")
+public ResponseEntity<?> retirer(@PathVariable String id, @RequestBody MontantRequest request) {
+    try {
+        Compte compte = compteService.retirer(id, request.getMontant());
+        return ResponseEntity.ok(compte);
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
+}
+
 }
