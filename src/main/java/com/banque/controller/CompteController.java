@@ -1,31 +1,63 @@
 package com.banque.controller;
+
 import com.banque.model.Compte;
 import com.banque.model.CompteRequest;
 import com.banque.service.CompteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
-@RestController          // Dit que cette classe gère des requêtes HTTP
-@RequestMapping("/comptes") // Toutes les routes commencent par /comptes
+@RestController
+@RequestMapping("/comptes")
 public class CompteController {
 
-    @Autowired // Spring injecte automatiquement le service
+    @Autowired
     private CompteService compteService;
 
-    // Route GET /comptes → retourne la liste de tous les comptes
+    // GET /comptes → lister tous les comptes
     @GetMapping
     public List<Compte> obtenirTousLesComptes() {
         return compteService.obtenirTousLesComptes();
     }
 
-    // Route POST /comptes → crée un nouveau compte
+    // POST /comptes → créer un compte
     @PostMapping
-      
     public Compte creerCompte(@RequestBody CompteRequest request) {
-    return compteService.creerCompte(request.getNomTitulaire(), request.getSoldeInitial());
+        return compteService.creerCompte(request.getNomTitulaire(), request.getSoldeInitial());
     }
 
+    // GET /comptes/{id} → consulter un compte
+    @GetMapping("/{id}")
+    public ResponseEntity<Compte> obtenirCompteParId(@PathVariable String id) {
+        return compteService.obtenirCompteParId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // POST /comptes/{id}/depot → effectuer un dépôt
+    @PostMapping("/{id}/depot")
+    public ResponseEntity<?> deposer(@PathVariable String id, @RequestBody Map<String, Double> body) {
+        try {
+            double montant = body.get("montant");
+            Compte compte = compteService.deposer(id, montant);
+            return ResponseEntity.ok(compte);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // POST /comptes/{id}/retrait → effectuer un retrait
+    @PostMapping("/{id}/retrait")
+    public ResponseEntity<?> retirer(@PathVariable String id, @RequestBody Map<String, Double> body) {
+        try {
+            double montant = body.get("montant");
+            Compte compte = compteService.retirer(id, montant);
+            return ResponseEntity.ok(compte);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
