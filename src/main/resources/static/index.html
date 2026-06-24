@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Bancaire</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>🏦 Application de Gestion Bancaire</h1>
+        <p>Créer des comptes, effectuer des dépôts et retraits en temps réel.</p>
+    </header>
+
+    <div class="grid">
+
+        <div class="card">
+            <h2>Créer un compte</h2>
+
+            <input type="text" id="nom" placeholder="Nom du titulaire">
+            <input type="number" id="solde" placeholder="Solde initial">
+
+            <button onclick="creerCompte()">Créer le compte</button>
+        </div>
+
+        <div class="card">
+            <h2>Effectuer un dépôt</h2>
+
+            <input type="text" id="idDepot" placeholder="ID du compte">
+            <input type="number" id="montantDepot" placeholder="Montant">
+
+            <button onclick="depot()">Déposer</button>
+        </div>
+
+        <div class="card">
+            <h2>Effectuer un retrait</h2>
+
+            <input type="text" id="idRetrait" placeholder="ID du compte">
+            <input type="number" id="montantRetrait" placeholder="Montant">
+
+            <button onclick="retrait()">Retirer</button>
+        </div>
+
+    </div>
+
+    <div class="card comptes">
+        <div class="titre-comptes">
+            <h2>Liste des comptes</h2>
+            <button onclick="chargerComptes()">Actualiser</button>
+        </div>
+
+        <ul id="listeComptes"></ul>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
